@@ -9,7 +9,7 @@ pipeline {
 		stage('Checking EKS Access') {
 			steps {
 				withAWS(credentials: 'aws-creds') {
-					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster'
+					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster-1'
 					sh 'kubectl get pods -A'
 				}
 			}
@@ -18,7 +18,7 @@ pipeline {
 		stage('Creating EKS Namespaces') {
 			steps {
 				withAWS(credentials: 'aws-creds') {
-					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster'
+					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster-1'
 					sh 'kubectl create ns development || exit 0'
 					sh 'kubectl create ns production || exit 0'
 				}
@@ -32,7 +32,7 @@ pipeline {
 
 			steps {
 				withAWS(credentials: 'aws-creds') {
-					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster'
+					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster-1'
 					sh 'ls -al'
 					sh 'kustomize build kustomize/overlays/development'
 					sh 'kubectl apply -k kustomize/overlays/development'
@@ -50,7 +50,7 @@ pipeline {
 
 			steps {
 				withAWS(credentials: 'aws-creds') {
-					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster'
+					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster-1'
 					sh 'ls -al'
 					sh 'kubectl delete -k kustomize/overlays/development'
 					sh 'kubectl get pods,deploy,svc -n development'
@@ -65,7 +65,7 @@ pipeline {
 
 			steps {
 				withAWS(credentials: 'aws-creds') {
-					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster'
+					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster-1'
 					sh 'ls -al'
 					sh 'kustomize build kustomize/overlays/production'
 					sh 'kubectl apply -k kustomize/overlays/production'
@@ -83,7 +83,7 @@ pipeline {
 
 			steps {
 				withAWS(credentials: 'aws-creds') {
-					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster'
+					sh 'aws eks update-kubeconfig --region us-east-1  --name eks-cluster-1'
 					sh 'ls -al'
 					sh 'kubectl delete -k kustomize/overlays/production'
 					sh 'kubectl get pods,deploy,svc -n production'
